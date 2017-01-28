@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class PhysicalBoard extends PlayingField {
@@ -36,7 +37,6 @@ public class PhysicalBoard extends PlayingField {
 			redWin = ImageIO.read(PhysicalBoard.class.getResource("Images/Red_Win.png"));
 			yellowWin = ImageIO.read(PhysicalBoard.class.getResource("Images/Yellow_Win.png"));
 		} catch (IOException e) {
-
 		}
 		// Calls no-Args constructor of PlayingField
 		frame = new JFrame();
@@ -52,7 +52,7 @@ public class PhysicalBoard extends PlayingField {
 		for (int i = 0; i < COLUMNS; i++) {
 			for (int j = 0; j < ROWS; j++) {
 				// [0][0] will APPEAR to be the bottom right square.
-				squareLabels[i][j] = new Square(i, j);
+				squareLabels[i][j] = new Square(i, j, this);
 				// squareLabels[i][j].setMinimumSize(new Dimension(30, 30));
 				squareLabels[i][j].setPreferredSize(new Dimension(100, 100));
 				c.gridx = (i);
@@ -62,29 +62,35 @@ public class PhysicalBoard extends PlayingField {
 			}
 		}
 	}
-
+	
+	
+	
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
 
-	public void dropPiece(int column) {
+	@Override
+	public int dropPiece(int column) {
+
 		if (piecesPlaced[column] < ROWS) {
+			System.out.println("Placing at: " + column +  "," + piecesPlaced[column]);
 			if (playerTurn == 1)
 				squareLabels[column][piecesPlaced[column]].updateImage(Math.random()<=0.95?red:red2);
 			else if (playerTurn == -1)
 				squareLabels[column][piecesPlaced[column]].updateImage(Math.random()<=0.95?yellow:yellow2);
-			super.dropPiece(column);
+			return super.dropPiece(column);
 		}
+		return 0;
 
 	}
 	
 	public void declareWinner(int[][] winSet) {
 		if(winSet[0][0] == -1)
-			System.out.println("You are both failures.");
+			JOptionPane.showMessageDialog(frame, "It's a draw!");
 		else {
 			for(int[] piece : winSet)
 				squareLabels[piece[0]][piece[1]].updateImage((playerTurn == 1?redWin:yellowWin));
-			System.out.println((playerTurn == 1?"RED":"YELLOW") + " WINS!");
+			JOptionPane.showMessageDialog(frame, (playerTurn == 1?"Red":"Yellow") + " wins!");
 		}
 	}
 

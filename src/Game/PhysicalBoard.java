@@ -47,13 +47,11 @@ public class PhysicalBoard extends PlayingField {
 		frame.add(panel);
 		panel.setFocusable(true);
 		c = new GridBagConstraints();
-		// c.insets = new Insets(10, 10, 10, 10);
 		squareLabels = new Square[COLUMNS][ROWS];
 		for (int i = 0; i < COLUMNS; i++) {
 			for (int j = 0; j < ROWS; j++) {
-				// [0][0] will APPEAR to be the bottom right square.
+				// [0][0] will APPEAR to be the bottom left square.
 				squareLabels[i][j] = new Square(i, j, this);
-				// squareLabels[i][j].setMinimumSize(new Dimension(30, 30));
 				squareLabels[i][j].setPreferredSize(new Dimension(100, 100));
 				c.gridx = (i);
 				c.gridy = ROWS - (j + 1);

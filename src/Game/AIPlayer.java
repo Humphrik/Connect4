@@ -6,7 +6,6 @@ import java.util.Arrays;
 public class AIPlayer {
 	private PhysicalBoard linkedGame;
 	private int playerTurn;
-	private int MAX_LAYER = 2;
 
 	public AIPlayer(PhysicalBoard game, int p) {
 		linkedGame = game;
@@ -17,47 +16,39 @@ public class AIPlayer {
 	}
 
 	public void move() {
-		int[] scores = calculateBestMove(linkedGame, 1, linkedGame.getPlayerTurn());
+		
+
+		int[] scores = calculateBestMove(linkedGame, 1, linkedGame.getPlayerTurn(), 2);
 		for (int i = 0; i < scores.length; i++)
 			System.out.println(scores[i]);
 		System.out.println("Best Score:" + findBestScore(scores));
 		int column = findGoodMove(scores, findBestScore(scores));
-		if (column < 0)
+		if(testImminentLoss(scores)) {
+			int[] enemyMoves = calculateBestMove(linkedGame, 1, linkedGame.getPlayerTurn() * -1, 1);
+			column = findGoodMove(enemyMoves, findBestScore(enemyMoves));
+		}
+		else if (column < 0)
 			do
 				column = ((int) (Math.random() * 7));
 			while (linkedGame.getPiecesPlaced()[column] >= linkedGame.ROWS);
 		linkedGame.dropPiece(column);
 		System.out.println("done.");
-		//// System.out.println("Placing at: " + column + ", " +
-		//// linkedGame.getPiecesPlaced()[column]);
 	}
 
-	public int[] calculateBestMove(PlayingField p, int depth, int pT) {
+	public int[] calculateBestMove(PlayingField p, int depth, int pT, int maxLayer) {
 		int scores[] = new int[p.COLUMNS];
 		// negative is loss, positive is win.
-		// int[] scores = new int[p.getDimensions()[0]];
 		PlayingField pI;
-		//System.out.println(depth);
 		for (int i = 0; i < p.COLUMNS; i++) {
 			if (p.getPiecesPlaced()[i] < p.ROWS) {
 				pI = new PlayingField(p.getSquareStatuses(), pT);
 				int returned1 = pI.dropPiece(i);
 				if (returned1 != 0)
 					scores[i] = depth;
-				else if(Math.abs(depth) < MAX_LAYER)
-					scores[i] = findLargestThreat(calculateBestMove(pI, depth*-1 + (depth < 0 ? 1:-1), pT * -1));
+				else if(Math.abs(depth) < maxLayer)
+					scores[i] = findLargestThreat(calculateBestMove(pI, depth*-1 + (depth < 0 ? 1:-1), pT * -1, maxLayer));
 			}
 		}
-		/*
-		for (int i = 0; i < p.COLUMNS; i++) {
-			if (p.getPiecesPlaced()[i] < p.ROWS) {
-				pI = new PlayingField(p.getSquareStatuses(), pT*-1);
-				int returned1 = pI.dropPiece(i);
-				if (returned1 != 0 && scores[i] == 0)
-					scores[i] = -depth;
-			}
-		}
-		*/
 		return scores;
 	}
 
@@ -126,6 +117,20 @@ public class AIPlayer {
 		else
 			return -1;
 	}
+	
+	public boolean testImminentLoss(int[] array){
+		int reference = array[0];
+		for(int i = 0; i < array.length; i++)
+			if ( array[i] != reference && linkedGame.getPiecesPlaced()[i] < linkedGame.ROWS)
+				return false;
+		return true;
+	}
+	
+	
+	
+	
+	
+	
 
 	public void start() {
 		if (linkedGame.getPlayerTurn() == playerTurn)

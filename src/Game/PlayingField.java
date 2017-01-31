@@ -80,12 +80,14 @@ public class PlayingField {
 	}
 
 	public void declareWinner(int[][] winSet) {
+		/*
 		if (winSet[0][0] == -1)
 			System.out.println("This scenario leads to a draw.");
 		if (playerTurn == 1)
 			System.out.println("Red wins in this scenario");
 		else
 			System.out.println("Yellow wins in this scenario");
+		 */
 	}
 
 	public boolean checkDraw() {

@@ -14,15 +14,20 @@ public class Square extends JLabel implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	private int column;
 	private int row;
+	private PhysicalBoard linkedGame;
 	
-	public Square(int c, int r) {
+	public Square(int c, int r, PhysicalBoard game) {
 		column = c;
 		row = r;
+		linkedGame = game;
 		addMouseListener(this);
 	}
 
 	public void mousePressed(MouseEvent e) {
-		GameArea.game.dropPiece(column);
+		linkedGame.dropPiece(column);
+		if(linkedGame.getAIPlayer() != null) {
+			linkedGame.getAIPlayer().start();
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {

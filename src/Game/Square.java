@@ -15,7 +15,7 @@ public class Square extends JLabel implements MouseListener {
 	private int column;
 	private int row;
 	private PhysicalBoard linkedGame;
-	
+
 	public Square(int c, int r, PhysicalBoard game) {
 		column = c;
 		row = r;
@@ -24,9 +24,11 @@ public class Square extends JLabel implements MouseListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-		linkedGame.dropPiece(column);
-		if(linkedGame.getAIPlayer() != null) {
-			linkedGame.getAIPlayer().start();
+		if (linkedGame.getPlayerTurn() != 0) {
+			linkedGame.dropPiece(column);
+			if (linkedGame.getAIPlayer() != null) {
+				linkedGame.getAIPlayer().start();
+			}
 		}
 	}
 
@@ -41,8 +43,8 @@ public class Square extends JLabel implements MouseListener {
 
 	public void mouseClicked(MouseEvent e) {
 	}
-	
+
 	public void updateImage(Image image) {
-		this.setIcon(new ImageIcon(image.getScaledInstance(100,100,Image.SCALE_SMOOTH)));
+		this.setIcon(new ImageIcon(image.getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
 	}
 }

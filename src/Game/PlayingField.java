@@ -25,7 +25,7 @@ public class PlayingField {
 		piecesPlaced = new int[COLUMNS];
 		squareStatuses = new int[COLUMNS][ROWS];
 		for (int i = 0; i < COLUMNS; i++)
-			for (int j = 0; j< ROWS; j++) {
+			for (int j = 0; j < ROWS; j++) {
 				squareStatuses[i][j] = sS[i][j];
 				if (squareStatuses[i][j] != 0)
 					piecesPlaced[i]++;
@@ -57,36 +57,47 @@ public class PlayingField {
 			for (int j = 0; j < ROWS; j++)
 				if (squareStatuses[i][j] + squareStatuses[i + 1][j] + squareStatuses[i + 2][j]
 						+ squareStatuses[i + 3][j] == squareStatuses[i][j] * 4 && squareStatuses[i][j] != 0)
-					return new int[][] { { i, j }, { i + 1, j }, { i + 2, j }, { i + 3, j } };
+					if (i < COLUMNS - 4 && squareStatuses[i + 4][j] == squareStatuses[i][j])
+						return new int[][] { { i, j }, { i + 1, j }, { i + 2, j }, { i + 3, j }, { i + 4, j } };
+					else
+						return new int[][] { { i, j }, { i + 1, j }, { i + 2, j }, { i + 3, j } };
 		// Vertical
 		for (int i = 0; i < COLUMNS; i++)
 			for (int j = 0; j < ROWS - 3; j++)
 				if (squareStatuses[i][j] + squareStatuses[i][j + 1] + squareStatuses[i][j + 2]
 						+ squareStatuses[i][j + 3] == squareStatuses[i][j] * 4 && squareStatuses[i][j] != 0)
-					return new int[][] { { i, j }, { i, j + 1 }, { i, j + 2 }, { i, j + 3 } };
+					if (j < ROWS - 4 && squareStatuses[i][j + 4] == squareStatuses[i][j])
+						return new int[][] { { i, j }, { i, j + 1 }, { i, j + 2 }, { i, j + 3 }, { i, j + 4 } };
+					else
+						return new int[][] { { i, j }, { i, j + 1 }, { i, j + 2 }, { i, j + 3 } };
+
 		// Diagonal (Right)
 		for (int i = 0; i < COLUMNS - 3; i++)
 			for (int j = 0; j < ROWS - 3; j++)
 				if (squareStatuses[i][j] + squareStatuses[i + 1][j + 1] + squareStatuses[i + 2][j + 2]
 						+ squareStatuses[i + 3][j + 3] == squareStatuses[i][j] * 4 && squareStatuses[i][j] != 0)
-					return new int[][] { { i, j }, { i + 1, j + 1 }, { i + 2, j + 2 }, { i + 3, j + 3 } };
+					if (i < COLUMNS - 4 && j < ROWS - 4 && squareStatuses[i + 4][j + 4] == squareStatuses[i][j])
+						return new int[][] { { i, j }, { i + 1, j + 1 }, { i + 2, j + 2 }, { i + 3, j + 3 }, {i + 4, j + 4} };
+					else
+						return new int[][] { { i, j }, { i + 1, j + 1 }, { i + 2, j + 2 }, { i + 3, j + 3 } };
 		// Diagonal (Left)
 		for (int i = 3; i < COLUMNS; i++)
 			for (int j = 0; j < ROWS - 3; j++)
 				if (squareStatuses[i][j] + squareStatuses[i - 1][j + 1] + squareStatuses[i - 2][j + 2]
 						+ squareStatuses[i - 3][j + 3] == squareStatuses[i][j] * 4 && squareStatuses[i][j] != 0)
-					return new int[][] { { i, j }, { i - 1, j + 1 }, { i - 2, j + 2 }, { i - 3, j + 3 } };
+					if (i > 4 && j < ROWS - 4 && squareStatuses[i - 4][j + 4] == squareStatuses[i][j])
+						return new int[][] { { i, j }, { i - 1, j + 1 }, { i - 2, j + 2 }, { i - 3, j + 3 }, { i - 4, j + 4} };
+					else
+						return new int[][] { { i, j }, { i - 1, j + 1 }, { i - 2, j + 2 }, { i - 3, j + 3 } };
 		return null;
 	}
 
 	public void declareWinner(int[][] winSet) {
 		/*
-		if (winSet[0][0] == -1)
-			System.out.println("This scenario leads to a draw.");
-		if (playerTurn == 1)
-			System.out.println("Red wins in this scenario");
-		else
-			System.out.println("Yellow wins in this scenario");
+		 * if (winSet[0][0] == -1) System.out.println(
+		 * "This scenario leads to a draw."); if (playerTurn == 1)
+		 * System.out.println("Red wins in this scenario"); else
+		 * System.out.println("Yellow wins in this scenario");
 		 */
 	}
 

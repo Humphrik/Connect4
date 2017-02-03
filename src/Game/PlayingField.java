@@ -37,14 +37,14 @@ public class PlayingField {
 			squareStatuses[column][piecesPlaced[column]] = playerTurn;
 			piecesPlaced[column]++;
 			int[][] winSet = checkPlayerWin();
-			if (checkDraw()) {
-				declareWinner(new int[][] { { -1 } });
-				playerTurn = 0;
-			} else if (winSet != null && playerTurn != 0) {
+			if (winSet != null && playerTurn != 0) {
 				declareWinner(winSet);
 				int temp = playerTurn;
 				playerTurn = 0;
 				return temp;
+			} else if (checkDraw()) {
+				declareWinner(new int[][] { { -1 } });
+				playerTurn = 0;
 			}
 			playerTurn *= -1;
 		}
@@ -77,7 +77,8 @@ public class PlayingField {
 				if (squareStatuses[i][j] + squareStatuses[i + 1][j + 1] + squareStatuses[i + 2][j + 2]
 						+ squareStatuses[i + 3][j + 3] == squareStatuses[i][j] * 4 && squareStatuses[i][j] != 0)
 					if (i < COLUMNS - 4 && j < ROWS - 4 && squareStatuses[i + 4][j + 4] == squareStatuses[i][j])
-						return new int[][] { { i, j }, { i + 1, j + 1 }, { i + 2, j + 2 }, { i + 3, j + 3 }, {i + 4, j + 4} };
+						return new int[][] { { i, j }, { i + 1, j + 1 }, { i + 2, j + 2 }, { i + 3, j + 3 },
+								{ i + 4, j + 4 } };
 					else
 						return new int[][] { { i, j }, { i + 1, j + 1 }, { i + 2, j + 2 }, { i + 3, j + 3 } };
 		// Diagonal (Left)
@@ -86,7 +87,8 @@ public class PlayingField {
 				if (squareStatuses[i][j] + squareStatuses[i - 1][j + 1] + squareStatuses[i - 2][j + 2]
 						+ squareStatuses[i - 3][j + 3] == squareStatuses[i][j] * 4 && squareStatuses[i][j] != 0)
 					if (i > 4 && j < ROWS - 4 && squareStatuses[i - 4][j + 4] == squareStatuses[i][j])
-						return new int[][] { { i, j }, { i - 1, j + 1 }, { i - 2, j + 2 }, { i - 3, j + 3 }, { i - 4, j + 4} };
+						return new int[][] { { i, j }, { i - 1, j + 1 }, { i - 2, j + 2 }, { i - 3, j + 3 },
+								{ i - 4, j + 4 } };
 					else
 						return new int[][] { { i, j }, { i - 1, j + 1 }, { i - 2, j + 2 }, { i - 3, j + 3 } };
 		return null;

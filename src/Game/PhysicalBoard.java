@@ -41,7 +41,7 @@ public class PhysicalBoard extends PlayingField {
 		// Calls no-Args constructor of PlayingField
 		frame = new JFrame();
 		panel = new JPanel(new GridBagLayout());
-		frame.setSize(730, 640);
+		frame.setSize(COLUMNS*100 + 30, ROWS*100 + 40);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.add(panel);

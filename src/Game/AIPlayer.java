@@ -1,7 +1,6 @@
 package Game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Random;
 
 public class AIPlayer {
 	private PhysicalBoard linkedGame;
@@ -17,7 +16,7 @@ public class AIPlayer {
 
 	public void move() {
 
-		int[] scores = calculateBestMove(linkedGame, 1, linkedGame.getPlayerTurn(), 4);
+		int[] scores = calculateBestMove(linkedGame, 1, linkedGame.getPlayerTurn(), 6);
 		for (int i = 0; i < scores.length; i++)
 			System.out.println(scores[i]);
 		System.out.println("Best Score:" + findBestScore(scores));
@@ -28,7 +27,7 @@ public class AIPlayer {
 		}
 		if (column < 0)
 			do
-				column = ((int) (Math.random() * 7));
+				column = normalRandom(linkedGame.COLUMNS/2.0, 1, 0, linkedGame.COLUMNS);
 			while (linkedGame.getPiecesPlaced()[column] >= linkedGame.ROWS);
 		linkedGame.dropPiece(column);
 		System.out.println("done.");
@@ -112,7 +111,7 @@ public class AIPlayer {
 		int index = 0;
 		int overflow = 0;
 		do {
-			index = (int) (Math.random() * a.length);
+			index = normalRandom(a.length/2.0, 1.0, 0, a.length);
 			// System.out.println("Temp: " + index);
 			result = a[index];
 			if (overflow >= 999)
@@ -133,9 +132,26 @@ public class AIPlayer {
 		System.out.println("Imminent Loss Found");
 		return true;
 	}
+	
+	public int normalRandom(double avg, double sd, int min, int max) {
+		// Picks a random number based on a normal distribution
+		// Constrained to a minimum and maximum.
+		
+		Random r = new Random();
+		int randNum = (int)(r.nextGaussian()*sd + avg);
+		if(randNum <= min)
+			randNum = 0;
+		else if(randNum >= max)
+			randNum = max-1;
+		return randNum;
+		
+	}
+	
+	
 
 	public void start() {
 		if (linkedGame.getPlayerTurn() == playerTurn)
 			move();
 	}
+	
 }

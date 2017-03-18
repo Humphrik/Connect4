@@ -13,12 +13,10 @@ public class Square extends JLabel implements MouseListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int column;
-	private int row;
 	private PhysicalBoard linkedGame;
 
-	public Square(int c, int r, PhysicalBoard game) {
+	public Square(int c, PhysicalBoard game) {
 		column = c;
-		row = r;
 		linkedGame = game;
 		addMouseListener(this);
 	}
